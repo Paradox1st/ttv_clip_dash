@@ -5,6 +5,7 @@ from your favorite streamers!
 
 ## Setup
 **The program assumes there is a MySQL server running**
++ In the console run `npm install` (installs dependencies)
 + Modify `dbinfo.json` in the `credentials` folder to match database settings (change user and/or password).
 + In the console run `node create_database.js`
 
