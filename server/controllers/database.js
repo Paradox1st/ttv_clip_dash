@@ -10,6 +10,7 @@ var mysql           = require('mysql'),
 
 class Database {
   constructor(config) {
+    config["database"] = "ttv_clip_dash";
     this.con = mysql.createConnection(config);
     this.con.connect((err) => {
       if (err) {
