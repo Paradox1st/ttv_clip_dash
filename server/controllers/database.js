@@ -5,21 +5,21 @@
 // handles database queries
 
 // dependencies
-var mysql           = require('mysql'),
-    dbinfo          = require('../../credentials/dbinfo.json');
+var mysql = require('mysql'),
+  dbinfo = require('../../credentials/dbinfo.json');
 
 class Database {
   constructor(config) {
     config["database"] = "ttv_clip_dash";
     this.con = mysql.createConnection(config);
-    this.con.connect((err) => {
+    this.con.connect(async (err) => {
       if (err) {
         console.log('Error connecting to database: ');
         console.log(err);
       } else {
         console.log('Connected to database');
       }
-    })
+    });
   }
 
   async query(sql) {
@@ -39,7 +39,7 @@ class Database {
 
     var user = 0;
 
-    if(response.length>0) user = response[0];
+    if (response.length > 0) user = response[0];
 
     return user;
   }
