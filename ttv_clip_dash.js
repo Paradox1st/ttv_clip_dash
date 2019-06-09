@@ -43,8 +43,7 @@ app.get('/dashboard', async function(req, res){
   if(req.session && req.session.passport && req.user){
     // find template file
     var template_file = fs.readFileSync(
-    path.join(__dirname + '/server/templates/dashboard.html'),
-    'utf8');
+    path.join(__dirname + '/server/templates/dashboard.html'),'utf8');
     // compile template file and send to user
     var template = handlebars.compile(template_file);
 
