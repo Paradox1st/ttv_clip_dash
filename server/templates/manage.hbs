@@ -2,12 +2,42 @@
     {{#content "container_body"}}
         <form>
             <input type=text id="url" placeholder="Clip URL Here">
+            <input type=text id="title" placeholder="Personal Clip Title (Optional)">
             <input type=button value="Add Clip" onclick="addClip()">
         </form>
+        <div id="result">
+        </div>
         {{#embed "clip" clips=user_clips}}
         {{/embed}}
     {{/content}}
+
     {{#content "footer" mode="append"}}
+    <script>
+        function addClip() {
+            var url = $('#url').val();
+            var title = $('#title').val();
+            if(url.match(/(?:[A-Z]\w*)+/) === null){
+                return $('#result').html("Not a Clip URL!");
+            }else{
+                var clip_id = url.match(/(?:[A-Z]\w*)+/)[0];
+            }
+            $.ajax({
+                type: "POST",
+                url: '/addClip',
+                data: {
+                    clip_id: clip_id,
+                    title: title
+                },
+                dataType: "html",
+                success: function(msg){
+                    $('#result').html(msg);
+                },
+				error: function (jgXHR, textStatus, errorThrown) {
+					alert("Error: " + textStatus + " " + errorThrown);
+				}
+            });
+        }
+    </script>
     <link rel="stylesheet" href="CSS/landing.css">
     {{/content}}
 {{/extend}}

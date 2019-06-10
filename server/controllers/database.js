@@ -6,7 +6,8 @@
 
 // dependencies
 var mysql = require('mysql'),
-    dbinfo = require('../../credentials/dbinfo.json');
+    dbinfo = require('../../credentials/dbinfo.json'),
+    twitch = require('./twitch').Twitch;
 
 class Database {
     constructor(config) {
@@ -26,7 +27,7 @@ class Database {
         var self = this;
         return new Promise((resolve, reject) => {
             self.con.query(sql, (err, rows) => {
-                if (err) reject(err);
+                if (err) resolve(err);
                 else resolve(rows);
             });
         });
@@ -55,13 +56,49 @@ class Database {
     }
 
     async getUserClips(user_id, count) {
-        var query_str = 'select * from clips where user_id=' +
-            this.con.escape(user_id) + ' limit ' +
+        var query_str = 'select clip_id, clip_title from clips where user_id=' +
+            this.con.escape(user_id) + ' order by modified_date limit ' +
             this.con.escape(count);
 
         var response = await this.query(query_str);
+        if(response.length === 0){
+            return [];
+        }
+        var clip_ids = response.map(clip=>clip.clip_id);
+        var clips_info = await twitch.getClips(clip_ids);
+        clips_info.map((info,idx)=>{
+            info["my_title"] = response[idx].clip_title;
+        });
 
-        return response;
+        return clips_info;
+    }
+
+    async addClip(user_id, clip_id, clip_title) {
+        var clip = await twitch.getClips(clip_id);
+        var msg = "";
+
+        if(clip.length < 1){
+            return 'Not a Clip!';
+        }
+
+        if(clip_title === ""){
+            clip_title = clip[0].title;
+        }
+
+        var query_str = 'insert into clips (clip_id, user_id, clip_title) ' +
+            'values (' + this.con.escape(clip_id) + ',' +
+            this.con.escape(user_id) + ',' +
+            this.con.escape(clip_title) + ');';
+        
+        var response = await this.query(query_str)
+        
+        if(response.errno === 1062){
+            msg = 'Duplicate Clip!';
+        }else{
+            msg = 'Added Clip!';
+        }
+
+        return msg;
     }
 }
 

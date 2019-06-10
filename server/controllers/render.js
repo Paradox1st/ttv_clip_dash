@@ -74,14 +74,11 @@ class Render {
         var template = handlebars.compile(template_file);
 
         var my_clips = await db.getUserClips(user.id, 10);
-        if(my_clips.length > 0){
-            var clips_info = await twitch.getClips(my_clips);
-        }
 
         return template({
             title: 'Manage Clips',
             user: user,
-            user_clips: clips_info
+            user_clips: my_clips
         });
     }
 }

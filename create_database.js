@@ -11,8 +11,11 @@ db.query(`create table users (id int key,
     username varchar(20) not null,
     dispname varchar(50) character set utf8mb4 not null,
     img varchar(255) not null);`);
-db.query(`create table clips (clip_id int key,
+db.query(`create table clips (clip_id varchar(100) key,
+    clip_title varchar(100) character set utf8mb4,
+    modified_date date,
     user_id int,
-    foreign key (user_id) references users(id));`);
+    foreign key (user_id) references users(id),
+    unique (clip_id, user_id));`);
 
 db.end();

@@ -4,6 +4,7 @@
         <td>
             <a href="{{clip.url}}">
             <div class="container">
+                {{#if my_title}}{{clip.my_title}}{{/if}}
                 <img src="{{clip.thumbnail_url}}">
                 {{clip.title}} from {{clip.broadcaster_name}}
             </div>

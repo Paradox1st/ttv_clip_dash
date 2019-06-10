@@ -96,6 +96,10 @@ class Twitch {
     }
 
     async getClips(clip_ids){
+        if(clip_ids.length === 0){
+            return [];
+        }
+        
         let options = {
             url: 'https://api.twitch.tv/helix/clips',
             method: 'GET',

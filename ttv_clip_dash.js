@@ -7,6 +7,7 @@
 // dependencies
 var express     = require('express'),
     session     = require('express-session'),
+    bodyparser  = require('body-parser'),
     fs          = require('fs'),
     db          = require('./server/controllers/database').Database,
     passport    = require('./server/controllers/passport').passport,
@@ -21,6 +22,8 @@ app.use(session({ secret: SESSION_SECRET, resave: false, saveUninitialized: fals
 app.use(express.static('server/templates'));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(bodyparser.urlencoded({extended:false}));   // body-parser stuff
+app.use(bodyparser.json());   // body-parser stuff
 
 // Set route to start OAuth link, this is where you define scopes to request
 app.get('/auth/twitch', passport.authenticate('twitch'));
@@ -53,7 +56,15 @@ app.get('/manage', async function (req, res) {
     } else {
         res.redirect('/');
     }
-})
+});
+
+app.post('/addClip', async function (req, res){
+    var result = await db.addClip(
+        req.user.id,
+        req.body.clip_id,
+        req.body.title);
+    res.send(result);
+});
 
 app.get('/logout', function (req, res) {
     req.logout();
