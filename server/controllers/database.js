@@ -56,18 +56,21 @@ class Database {
     }
 
     async getUserClips(user_id, count) {
-        var query_str = 'select clip_id, clip_title from clips where user_id=' +
-            this.con.escape(user_id) + ' order by modified_date limit ' +
+        var query_str = 'select clip_id, clip_title, modified from clips where user_id=' +
+            this.con.escape(user_id) + ' order by modified desc limit ' +
             this.con.escape(count);
 
         var response = await this.query(query_str);
-        if(response.length === 0){
+        if (response.length === 0) {
             return [];
         }
-        var clip_ids = response.map(clip=>clip.clip_id);
+        var clip_ids = response.map(clip => clip.clip_id);
         var clips_info = await twitch.getClips(clip_ids);
-        clips_info.map((info,idx)=>{
-            info["my_title"] = response[idx].clip_title;
+        clips_info.map((info, idx) => {
+            var found = response.find((clip) => {
+                return clip.clip_id === info.id;
+            });
+            info["my_title"] = found.clip_title;
         });
 
         return clips_info;
@@ -77,11 +80,11 @@ class Database {
         var clip = await twitch.getClips(clip_id);
         var msg = "";
 
-        if(clip.length < 1){
+        if (clip.length < 1) {
             return 'Not a Clip!';
         }
 
-        if(clip_title === ""){
+        if (clip_title === "") {
             clip_title = clip[0].title;
         }
 
@@ -89,12 +92,12 @@ class Database {
             'values (' + this.con.escape(clip_id) + ',' +
             this.con.escape(user_id) + ',' +
             this.con.escape(clip_title) + ');';
-        
+
         var response = await this.query(query_str)
-        
-        if(response.errno === 1062){
+
+        if (response.errno === 1062) {
             msg = 'Duplicate Clip!';
-        }else{
+        } else {
             msg = 'Added Clip!';
         }
 
