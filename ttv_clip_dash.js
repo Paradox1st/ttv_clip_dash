@@ -20,12 +20,12 @@ const SESSION_SECRET   = fs.readFileSync('credentials/session_secret','utf8');
 // Initialize Express and middlewares
 var app = express();
 app.use(session({secret: SESSION_SECRET, resave: false, saveUninitialized: false}));
-app.use(express.static('public'));
+app.use(express.static('server/templates'));
 app.use(passport.initialize());
 app.use(passport.session());
 
 // Set route to start OAuth link, this is where you define scopes to request
-app.get('/auth/twitch', passport.authenticate('twitch', { scope: 'user_read' }));
+app.get('/auth/twitch', passport.authenticate('twitch'));
 
 // Set route for OAuth redirect
 app.get('/auth/twitch/callback', passport.authenticate('twitch', { successRedirect: '/', failureRedirect: '/' }));
