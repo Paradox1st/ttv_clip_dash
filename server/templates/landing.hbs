@@ -1,20 +1,24 @@
 {{#extend "base"}}
-    {{#content "container_body"}}
-        <div class="display">
-            <h2 class="text-center">Twitch Clip Dashboard</h2>
-            <form>
-                <div class="avatar">
-                    <img src="https://cdn1.iconfinder.com/data/icons/video-games-14/24/video-game-logo-twitch-512.png"
-                        alt="Avatar">
-                </div>
-                <div class="text-center">
-                    <a class="btn btn_default" href="/auth/twitch">Connect to Twitch</a>
-                </div>
+{{#content "container_body"}}
+<div class="row">
+    <div class="col"></div>
+    <div class="col-4 text-center">
+        <div class="card">
+            <img class="img-fluid"
+                src="https://cdn1.iconfinder.com/data/icons/video-games-14/24/video-game-logo-twitch-512.png"
+                alt="Avatar">
+            <div class="card-body">
+                <h2 class="card-title">Twitch Clip Dashboard</h2>
+                <a class="btn btn-primary btn-block" href="/auth/twitch">Connect to Twitch</a>
+            </div>
             </form>
         </div>
-    {{/content}}
+    </div>
+    <div class="col"></div>
+</div>
+{{/content}}
 
-    {{#content "footer" mode="append"}}
+{{!#content "footer" mode="append"}
     <link rel="stylesheet" href="CSS/landing.css">
     {{/content}}
 {{/extend}}

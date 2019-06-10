@@ -30,7 +30,7 @@
                 },
                 dataType: "html",
                 success: function(msg){
-                    $('#result').html(msg);
+                    $('#result').html(`<div class="alert alert-primary" role="alert">`+msg+`</div>`);
                 },
 				error: function (jgXHR, textStatus, errorThrown) {
 					alert("Error: " + textStatus + " " + errorThrown);

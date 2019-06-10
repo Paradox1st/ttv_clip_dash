@@ -1,15 +1,9 @@
-<table>
-    <tr>
-        {{#each clips as |clip|}}
-        <td>
-            <a href="{{clip.url}}">
-            <div class="container">
-                {{#if my_title}}{{clip.my_title}}{{/if}}
-                <img src="{{clip.thumbnail_url}}">
-                {{clip.title}} from {{clip.broadcaster_name}}
-            </div>
-            </a>
-        </td>
-        {{/each}}
-    </tr>
-</table>
+{{#each clips as |clip|}}
+<a href="{{clip.url}}">
+    <div class="col">
+        {{#if my_title}}{{clip.my_title}}{{/if}}<br>
+        <img src="{{clip.thumbnail_url}}" class="img-fluid img-thumbnail"><br>
+        {{clip.title}} from {{clip.broadcaster_name}}
+    </div>
+</a>
+{{/each}}
