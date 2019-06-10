@@ -13,6 +13,10 @@ const TWITCH_CLIENT_ID = '3uwsh7juq64q095l48dgxgx88qhwse';
 const TWITCH_SECRET = fs.readFileSync('credentials/ttv_secret', 'utf8');
 const CALLBACK_URL = 'http://localhost:8080/auth/twitch/callback';
 
+function channel_compare(channel_a, channel_b) {
+    return channel_b.view_count - channel_a.view_count;
+}
+
 class Twitch {
     constructor() {
         this.ttv_oauth = {
@@ -40,8 +44,8 @@ class Twitch {
         return response.data[0];
     }
 
-    async getFollowedChannels(user_id) {
-        var options = {
+    async getFollowedChannels(user_id, count=3) {
+        let options_0 = {
             url: 'https://api.twitch.tv/helix/users/follows',
             method: 'GET',
             headers: {
@@ -49,12 +53,29 @@ class Twitch {
             },
             qs: {
                 'from_id': user_id,
-                'first': 3
+                'first': 100
             }
         };
 
-        var response = JSON.parse(await request(options));
-        return response.data;
+        var response_0 = JSON.parse(await request(options_0));
+
+        var channel_list = response_0.data.map(follow=>follow.to_id);
+
+        let options_1 = {
+            url: 'https://api.twitch.tv/helix/users',
+            method: 'GET',
+            headers: {
+                'Client-ID': TWITCH_CLIENT_ID
+            },
+            qs: {
+                'id': channel_list
+            }
+        }
+
+        var response_1 = JSON.parse(await request(options_1));
+        var channel_sort = response_1.data.sort( channel_compare );
+
+        return channel_sort.slice(0,count);
     }
 
     async getChannelClips(channel_id) {
@@ -71,6 +92,23 @@ class Twitch {
         };
 
         var response = JSON.parse(await request(options));
+        return response.data;
+    }
+
+    async getClips(clip_ids){
+        let options = {
+            url: 'https://api.twitch.tv/helix/clips',
+            method: 'GET',
+            headers: {
+                'Client-ID': TWITCH_CLIENT_ID
+            },
+            qs: {
+                'id': clip_ids
+            }
+        }
+
+        var response = JSON.parse(await request(options));
+
         return response.data;
     }
 }

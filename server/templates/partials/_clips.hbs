@@ -1,0 +1,14 @@
+<table>
+    <tr>
+        {{#each clips as |clip|}}
+        <td>
+            <a href="{{clip.url}}">
+            <div class="container">
+                <img src="{{clip.thumbnail_url}}">
+                {{clip.title}} from {{clip.broadcaster_name}}
+            </div>
+            </a>
+        </td>
+        {{/each}}
+    </tr>
+</table>

@@ -1,0 +1,42 @@
+{{#extend "base"}}
+    {{#content "container_body"}}
+        <table>
+            <tr>
+                <th>User ID</th>
+                <td>{{user.id}}</td>
+            </tr>
+            <tr>
+                <th>Username</th>
+                <td>{{user.username}}</td>
+            </tr>
+            <tr>
+                <th>Display Name</th>
+                <td>{{user.dispname}}</td>
+            </tr>
+            <tr>
+                <th>Image</th>
+                <td><img src='{{user.img}}'></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    {{#embed "clip" clips=user_clips}}
+                    {{/embed}}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    {{#followed_clips as |channel_clips|}}
+                    {{#embed "clip" clips=channel_clips}}
+                    {{/embed}}
+                    {{/followed_clips}}
+                </td>
+            </tr>
+            <tr>
+                <th colspan="2"><a href='/logout'><button>Log Out</button></a></th>
+            </tr>
+        </table>
+    {{/content}}
+    {{#content "footer" mode="append"}}
+    <link rel="stylesheet" href="CSS/landing.css">
+    {{/content}}
+{{/extend}}

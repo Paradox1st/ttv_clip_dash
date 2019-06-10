@@ -1,0 +1,13 @@
+{{#extend "base"}}
+    {{#content "container_body"}}
+        <form>
+            <input type=text id="url" placeholder="Clip URL Here">
+            <input type=button value="Add Clip" onclick="addClip()">
+        </form>
+        {{#embed "clip" clips=user_clips}}
+        {{/embed}}
+    {{/content}}
+    {{#content "footer" mode="append"}}
+    <link rel="stylesheet" href="CSS/landing.css">
+    {{/content}}
+{{/extend}}

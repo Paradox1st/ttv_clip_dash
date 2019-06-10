@@ -53,6 +53,16 @@ class Database {
 
         return await this.getUser(user_id);
     }
+
+    async getUserClips(user_id, count) {
+        var query_str = 'select * from clips where user_id=' +
+            this.con.escape(user_id) + ' limit ' +
+            this.con.escape(count);
+
+        var response = await this.query(query_str);
+
+        return response;
+    }
 }
 
 exports.Database = new Database(dbinfo);
