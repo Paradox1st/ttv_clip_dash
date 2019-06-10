@@ -1,43 +1,54 @@
 {{#extend "base"}}
-    {{#content "container_body"}}
-        <form>
-            <input type=text id="url" placeholder="Clip URL Here">
-            <input type=text id="title" placeholder="Personal Clip Title (Optional)">
-            <input type=button value="Add Clip" onclick="addClip()">
-        </form>
-        <div id="result">
-        </div>
-        {{#embed "clip" clips=user_clips}}
-        {{/embed}}
-    {{/content}}
 
-    {{#content "footer" mode="append"}}
-    <script>
-        function addClip() {
-            var url = $('#url').val();
-            var title = $('#title').val();
-            if(url.match(/(?:[A-Z]\w*)+/) === null){
-                return $('#result').html("Not a Clip URL!");
-            }else{
-                var clip_id = url.match(/(?:[A-Z]\w*)+/)[0];
-            }
-            $.ajax({
-                type: "POST",
-                url: '/addClip',
-                data: {
-                    clip_id: clip_id,
-                    title: title
-                },
-                dataType: "html",
-                success: function(msg){
-                    $('#result').html(`<div class="alert alert-primary" role="alert">`+msg+`</div>`);
-                },
-				error: function (jgXHR, textStatus, errorThrown) {
-					alert("Error: " + textStatus + " " + errorThrown);
-				}
-            });
+{{#content "container_body"}}
+<div class="rounded clip-form">
+<form class="text-light">
+    <div class="form-group">
+        <label for="url">Clip URL</label>
+        <input type="text" class="form-control" id="url" aria-describedby="emailHelp"
+            placeholder="Twitch Clip URL">
+    </div>
+    <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" class="form-control" id="title" placeholder="(Optional)">
+    </div>
+    <button type="button" class="btn btn-primary" onclick="addClip()">Add Clip</button>
+</form>
+<div id="result" class="text-light text-center">
+</div>
+</div>
+{{#embed "clip" clips=user_clips}}
+{{/embed}}
+{{/content}}
+
+{{#content "footer" mode="append"}}
+<script>
+    function addClip() {
+        var url = $('#url').val();
+        var title = $('#title').val();
+        if (url.match(/(?:[A-Z]\w*)+/) === null) {
+            return $('#result').html(`<div class="alert alert-primary" role="alert">Not a Clip URL!</div>`);
+        } else {
+            var clip_id = url.match(/(?:[A-Z]\w*)+/)[0];
         }
-    </script>
-    <link rel="stylesheet" href="CSS/landing.css">
-    {{/content}}
+        $.ajax({
+            type: "POST",
+            url: '/addClip',
+            data: {
+                clip_id: clip_id,
+                title: title
+            },
+            dataType: "html",
+            success: function (msg) {
+                $('#result').html(`<div class="alert alert-primary" role="alert">` + msg + `</div>`);
+            },
+            error: function (jgXHR, textStatus, errorThrown) {
+                alert("Error: " + textStatus + " " + errorThrown);
+            }
+        });
+    }
+</script>
+<link rel="stylesheet" href="CSS/manage.css">
+{{/content}}
+
 {{/extend}}

@@ -1,9 +1,15 @@
 {{#each clips as |clip|}}
-<a href="{{clip.url}}">
-    <div class="col">
-        {{#if my_title}}{{clip.my_title}}{{/if}}<br>
-        <img src="{{clip.thumbnail_url}}" class="img-fluid img-thumbnail"><br>
-        {{clip.title}} from {{clip.broadcaster_name}}
-    </div>
-</a>
+<div class="border-rounded clip-card overflow-hidden">
+    <a class="text-reset" href="{{clip.url}}">
+        <figure class="figure text-light">
+            <div class="d-flex">
+                {{#if my_title}}{{clip.my_title}}{{/if}}
+            </div>
+            <img src="{{clip.thumbnail_url}}" class="figure-img img-fluid rounded">
+            <figcaption class="fig-caption text-truncate">
+                {{clip.title}} from {{clip.broadcaster_name}}
+            </figcaption>
+        </figure>
+    </a>
+</div>
 {{/each}}

@@ -1,33 +1,29 @@
 {{#extend "base"}}
 
 {{#content "container_body"}}
-<div class="row">
-    <table>
-        <tr>
-            <th>User ID</th>
-            <td>{{user.id}}</td>
-        </tr>
-        <tr>
-            <th>Username</th>
-            <td>{{user.username}}</td>
-        </tr>
-        <tr>
-            <th>Display Name</th>
-            <td>{{user.dispname}}</td>
-        </tr>
-        <tr>
-            <th>Image</th>
-            <td><img src='{{user.img}}' height="100px"></td>
-        </tr>
-    </table>
+<div class="d-flex flex-row profile rounded-lg">
+    <div class="profile-picture">
+        <img class="rounded-circle" src='{{user.img}}'>
+    </div>
+    <div class="profile-name align-items-center">
+        <h1>{{user.dispname}}</h1>
+    </div>
+    <div class="d-flex justify-content-end ml-auto align-items-center">
+        <a href="/manage">
+            <button class="btn btn-primary">Manage</button>
+        </a>
+    </div>
 </div>
-<div class="row">
+
+<h1 class="text-light">My Clips</h1>
+<div class="d-flex rounded-lg">
     {{#embed "clip" clips=user_clips}}
     {{/embed}}
 </div>
 
+<h1 class="text-light">Followed Channel Clips</h1>
 {{#followed_clips as |channel_clips|}}
-<div class="row">
+<div class="d-flex rounded-lg">
     {{#embed "clip" clips=channel_clips}}
     {{/embed}}
 </div>
@@ -35,8 +31,8 @@
 
 {{/content}}
 
-{{!#content "footer" mode="append"}
-<link rel="stylesheet" href="CSS/landing.css">
+{{#content "footer" mode="append"}}
+<link rel="stylesheet" href="CSS/dashboard.css">
 {{/content}}
 
 {{/extend}}
